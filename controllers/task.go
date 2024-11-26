@@ -4,6 +4,7 @@ import (
 	"E-Todo/dto"
 	"E-Todo/services"
 	"E-Todo/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -81,7 +82,7 @@ func UpdateTask(c *gin.Context) {
 
 	task, err := services.UpdateTask(req)
 	if err != nil {
-		utils.Fail(c, nil, 1002, "Failed to update task")
+		utils.Fail(c, nil, 1002, fmt.Sprintf("Failed to update task:%v", err))
 		return
 	}
 
