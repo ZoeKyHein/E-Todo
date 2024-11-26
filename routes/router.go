@@ -13,6 +13,7 @@ func SetupRouter() *gin.Engine {
 		tasks.POST("", controllers.CreateTask)
 		tasks.GET("", controllers.FetchAllTasks)
 		tasks.PUT("/:id", controllers.UpdateTask)
+		tasks.DELETE("/:id", controllers.DeleteTask)
 	}
 	return r
 }

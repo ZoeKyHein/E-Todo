@@ -4,7 +4,9 @@ import (
 	"E-Todo/config"
 	"E-Todo/dto"
 	"E-Todo/models"
+	"errors"
 	"fmt"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -129,4 +131,25 @@ func UpdateTask(req dto.UpdateTaskReq) (dto.TaskDTO, error) {
 		CreatedAt:   task.CreatedAt.Format("2006-01-02T15:04:05Z"),
 		UpdatedAt:   task.UpdatedAt.Format("2006-01-02T15:04:05Z"),
 	}, nil
+}
+
+// DeleteTask 删除任务
+func DeleteTask(id uint) error {
+	// 初始化任务模型
+	var task models.Task
+
+	// 查询任务
+	if err := config.DB.Where("id = ?", id).First(&task).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("task not found: %w", err)
+		}
+		return fmt.Errorf("failed to find task: %w", err)
+	}
+
+	// 删除任务
+	if err := task.Delete(); err != nil {
+		return fmt.Errorf("failed to delete task: %w", err)
+	}
+
+	return nil
 }

@@ -89,3 +89,22 @@ func UpdateTask(c *gin.Context) {
 	// 返回成功响应
 	utils.Success(c, task, "Task updated successfully")
 }
+
+// DeleteTask 删除任务
+func DeleteTask(c *gin.Context) {
+	// 获取ID
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil || id <= 0 {
+		utils.Fail(c, nil, 1001, "Invalid task ID")
+		return
+	}
+
+	err = services.DeleteTask(uint(id))
+	if err != nil {
+		utils.Fail(c, nil, 1002, "Failed to delete task")
+		return
+	}
+
+	// 返回成功响应
+	utils.Success(c, nil, "Task deleted successfully")
+}

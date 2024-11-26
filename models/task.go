@@ -14,9 +14,10 @@ type Task struct {
 	Category    string `gorm:"size:100"`
 	Color       string `gorm:"size:20"`
 	DueDate     time.Time
-	Status      string    `gorm:"type:enum('pending','completed');default:'pending'"`
-	CreatedAt   time.Time `gorm:"autoCreateTime"`
-	UpdatedAt   time.Time `gorm:"autoUpdateTime"`
+	Status      string         `gorm:"type:enum('pending','completed');default:'pending'"`
+	CreatedAt   time.Time      `gorm:"autoCreateTime"`
+	UpdatedAt   time.Time      `gorm:"autoUpdateTime"`
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
 // Create 保存任务到数据库
@@ -76,6 +77,11 @@ func (t *Task) Update() error {
 		"due_date":    t.DueDate,
 		"status":      t.Status,
 	}).Error
+}
+
+// Delete 删除任务
+func (t *Task) Delete() error {
+	return config.DB.Delete(&t).Error
 }
 
 // Paginate 分页
