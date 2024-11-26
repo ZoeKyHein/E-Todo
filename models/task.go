@@ -21,3 +21,60 @@ type Task struct {
 func (t *Task) Create() error {
 	return config.DB.Create(t).Error
 }
+
+// TaskQueryParams 任务查询参数(Database)
+type TaskQueryParams struct {
+	Page          int
+	Limit         int
+	KeyWords      string
+	Category      string
+	Status        string
+	Color         string
+	RemainingDays int
+}
+
+// FetchAll 获取所有任务
+func (t *Task) FetchAll(params TaskQueryParams) ([]Task, int64, error) {
+	var tasks []Task
+	var total int64
+
+	query := config.DB.Model(&t)
+
+	// 关键字搜索
+	if params.KeyWords != "" {
+		query = query.Where("title LIKE ?", "%"+params.KeyWords+"%")
+	}
+
+	// 分类搜索
+	if params.Category != "" {
+		query = query.Where("category = ?", params.Category)
+	}
+
+	// 状态搜索
+	if params.Status != "" {
+		query = query.Where("status = ?", params.Status)
+	}
+
+	// 颜色搜索
+	if params.Color != "" {
+		query = query.Where("color = ?", params.Color)
+	}
+
+	// 剩余天数搜索
+	if params.RemainingDays > 0 {
+		currentDate := time.Now()
+		targetDate := currentDate.AddDate(0, 0, params.RemainingDays)
+		query = query.Where("due_date <= ?", targetDate)
+	}
+
+	// 获取总数
+	query.Count(&total)
+
+	// 分页
+	offset := (params.Page - 1) * params.Limit
+	limit := params.Limit
+	query = query.Offset(offset).Limit(limit)
+
+	err := query.Find(&tasks).Error
+	return tasks, total, err
+}
