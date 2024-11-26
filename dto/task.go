@@ -40,3 +40,14 @@ type TaskDTO struct {
 	CreatedAt   string `json:"created_at"`
 	UpdatedAt   string `json:"updated_at"`
 }
+
+// UpdateTaskReq 更新任务请求参数
+type UpdateTaskReq struct {
+	ID          uint   `json:"id" binding:"required"` // 任务 ID，必填
+	Title       string `json:"title"`                 // 任务标题，选填
+	Description string `json:"description"`           // 任务描述，选填
+	Category    string `json:"category"`              // 任务分类，选填
+	Color       string `json:"color"`                 // 颜色标记，选填
+	DueDate     string `json:"due_date"`              // 截止日期，选填 (格式：yyyy-MM-ddTHH:mmZ)
+	Status      string `json:"status"`                // 任务状态，选填
+}

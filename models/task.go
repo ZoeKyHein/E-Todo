@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// Task 任务模型
 type Task struct {
 	ID          uint   `gorm:"primaryKey"`
 	Title       string `gorm:"size:255;not null"`
@@ -63,6 +64,18 @@ func (t *Task) FetchAll(params TaskQueryParams) ([]Task, int64, error) {
 	query.Scopes(Paginate(params.Page, params.Limit)).Find(&tasks).Count(&total)
 
 	return tasks, total, query.Error
+}
+
+// Update 更新任务
+func (t *Task) Update() error {
+	return config.DB.Model(&t).Updates(map[string]interface{}{
+		"title":       t.Title,
+		"description": t.Description,
+		"category":    t.Category,
+		"color":       t.Color,
+		"due_date":    t.DueDate,
+		"status":      t.Status,
+	}).Error
 }
 
 // Paginate 分页

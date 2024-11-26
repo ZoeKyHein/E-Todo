@@ -12,6 +12,7 @@ func SetupRouter() *gin.Engine {
 	{
 		tasks.POST("", controllers.CreateTask)
 		tasks.GET("", controllers.FetchAllTasks)
+		tasks.PUT("/:id", controllers.UpdateTask)
 	}
 	return r
 }
