@@ -22,8 +22,8 @@ type CreateTaskResp struct {
 
 // FetchAllTasksReq 获取所有任务请求参数
 type FetchAllTasksReq struct {
-	Page  int `form:"page" binding:"gte=1"`   // 页码
-	Limit int `form:"limit" binding:"gte=50"` // 每页数量
+	Page  int `form:"page, default = 1" `   // 页码
+	Limit int `form:"limit, default = 50" ` // 每页数量
 
 	KeyWords string `form:"keywords"` // 关键字搜索
 	Category string `form:"category"` // 分类搜索

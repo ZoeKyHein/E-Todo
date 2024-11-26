@@ -71,9 +71,17 @@ func (t *Task) FetchAll(params TaskQueryParams) ([]Task, int64, error) {
 	query.Count(&total)
 
 	// 分页
-	offset := (params.Page - 1) * params.Limit
-	limit := params.Limit
-	query = query.Offset(offset).Limit(limit)
+	if params.Page != 0 || params.Limit != 0 {
+		if params.Page < 0 {
+			params.Page = 1
+		}
+		if params.Limit < 0 {
+			params.Limit = 50
+		}
+		offset := (params.Page - 1) * params.Limit
+		limit := params.Limit
+		query = query.Offset(offset).Limit(limit)
+	}
 
 	err := query.Find(&tasks).Error
 	return tasks, total, err

@@ -53,6 +53,11 @@ func FetchAllTasks(c *gin.Context) {
 		utils.Fail(c, nil, 1002, "Failed to fetch tasks")
 	}
 
+	if req.Page == 0 || req.Limit == 0 {
+		req.Page = 1
+		req.Limit = 50
+	}
+
 	// 返回成功响应
 	utils.Success(c, dto.FetchAllTasksResp{
 		Tasks: tasks,
