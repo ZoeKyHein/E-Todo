@@ -9,28 +9,15 @@ type CreateTaskReq struct {
 	DueDate     string `json:"due_date" binding:"required"` // 截止日期，必填 (格式：yyyy-MM-ddTHH:mmZ)
 }
 
-// CreateTaskResp 创建任务响应参数
-type CreateTaskResp struct {
-	ID          uint   `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Category    string `json:"category"`
-	Color       string `json:"color"`
-	DueDate     string `json:"due_date"`
-	Status      string `json:"status"`
-}
-
 // FetchAllTasksReq 获取所有任务请求参数
 type FetchAllTasksReq struct {
-	Page  int `form:"page, default = 1" `   // 页码
-	Limit int `form:"limit, default = 50" ` // 每页数量
-
-	KeyWords string `form:"keywords"` // 关键字搜索
-	Category string `form:"category"` // 分类搜索
-	Status   string `form:"status"`   // 状态搜索
-	Color    string `form:"color"`    // 颜色搜索
-
-	RemainingDays int `form:"remaining_days" binding:"gte=0"` // 剩余天数搜索
+	Page          int    `form:"page"`                           // 页码
+	Limit         int    `form:"limit"`                          // 每页数量
+	KeyWords      string `form:"keywords"`                       // 关键字搜索
+	Category      string `form:"category"`                       // 分类搜索
+	Status        string `form:"status"`                         // 状态搜索
+	Color         string `form:"color"`                          // 颜色搜索
+	RemainingDays int    `form:"remaining_days" binding:"gte=0"` // 剩余天数搜索
 }
 
 // FetchAllTasksResp 获取所有任务响应参数
@@ -50,4 +37,6 @@ type TaskDTO struct {
 	Color       string `json:"color"`
 	DueDate     string `json:"due_date"`
 	Status      string `json:"status"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
 }

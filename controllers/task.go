@@ -23,19 +23,8 @@ func CreateTask(c *gin.Context) {
 		return
 	}
 
-	// 构造响应数据
-	resp := dto.CreateTaskResp{
-		ID:          task.ID,
-		Title:       task.Title,
-		Description: task.Description,
-		Category:    task.Category,
-		Color:       task.Color,
-		DueDate:     task.DueDate.Format("2006-01-02T15:04Z"),
-		Status:      task.Status,
-	}
-
 	// 返回成功响应
-	utils.Success(c, resp, "Task created successfully")
+	utils.Success(c, task, "Task created successfully")
 }
 
 // FetchAllTasks 获取所有任务
@@ -48,14 +37,18 @@ func FetchAllTasks(c *gin.Context) {
 		return
 	}
 
+	// 设置默认值
+	if req.Page <= 0 {
+		req.Page = 1
+	}
+	if req.Limit <= 0 {
+		req.Limit = 50
+	}
+
 	tasks, total, err := services.FetchAllTasks(req)
 	if err != nil {
 		utils.Fail(c, nil, 1002, "Failed to fetch tasks")
-	}
-
-	if req.Page == 0 || req.Limit == 0 {
-		req.Page = 1
-		req.Limit = 50
+		return
 	}
 
 	// 返回成功响应
