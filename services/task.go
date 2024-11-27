@@ -161,6 +161,7 @@ func SoftDelete(id uint) error {
 	return nil
 }
 
+// RestoreTask 恢复任务
 func RestoreTask(id uint) error {
 	// 初始化任务模型
 	var task models.Task
