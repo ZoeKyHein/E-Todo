@@ -2,6 +2,8 @@ package models
 
 import (
 	"E-Todo/config"
+	"errors"
+	"fmt"
 	"gorm.io/gorm"
 	"time"
 )
@@ -81,6 +83,25 @@ func (t *Task) Update() error {
 
 // Delete 删除任务
 func (t *Task) Delete() error {
+	// 检查任务是否存在
+	if err := config.DB.First(&Task{}, t.ID).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("task not found: %w", err)
+		}
+		return fmt.Errorf("failed to query task: %w", err)
+	}
+	return config.DB.Unscoped().Delete(&t).Error
+}
+
+// SoftDelete 软删除任务
+func (t *Task) SoftDelete() error {
+	// 检查任务是否存在
+	if err := config.DB.First(&Task{}, t.ID).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("task not found: %w", err)
+		}
+		return fmt.Errorf("failed to query task: %w", err)
+	}
 	return config.DB.Delete(&t).Error
 }
 

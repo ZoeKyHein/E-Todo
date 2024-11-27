@@ -4,9 +4,7 @@ import (
 	"E-Todo/config"
 	"E-Todo/dto"
 	"E-Todo/models"
-	"errors"
 	"fmt"
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -138,17 +136,22 @@ func DeleteTask(id uint) error {
 	// 初始化任务模型
 	var task models.Task
 
-	// 查询任务
-	if err := config.DB.Where("id = ?", id).First(&task).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return fmt.Errorf("task not found: %w", err)
-		}
-		return fmt.Errorf("failed to find task: %w", err)
-	}
-
 	// 删除任务
 	if err := task.Delete(); err != nil {
 		return fmt.Errorf("failed to delete task: %w", err)
+	}
+
+	return nil
+}
+
+// SoftDelete 软删除任务
+func SoftDelete(id uint) error {
+	// 初始化任务模型
+	var task models.Task
+
+	// 软删除任务
+	if err := task.SoftDelete(); err != nil {
+		return fmt.Errorf("failed to soft delete task: %w", err)
 	}
 
 	return nil
