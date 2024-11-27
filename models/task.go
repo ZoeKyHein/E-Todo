@@ -58,7 +58,7 @@ func (t *Task) FetchAll(params TaskQueryParams) ([]Task, int64, error) {
 	if params.Color != "" {
 		query = query.Where("color = ?", params.Color)
 	}
-	if params.RemainingDays > 0 {
+	if params.RemainingDays >= 0 {
 		targetDate := time.Now().AddDate(0, 0, params.RemainingDays)
 		query = query.Where("due_date <= ?", targetDate)
 	}
@@ -84,7 +84,7 @@ func (t *Task) Update() error {
 // Delete 删除任务
 func (t *Task) Delete() error {
 	// 检查任务是否存在
-	if err := config.DB.First(&Task{}, t.ID).Error; err != nil {
+	if err := t.FindTaskByID(); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fmt.Errorf("task not found: %w", err)
 		}
@@ -96,7 +96,7 @@ func (t *Task) Delete() error {
 // SoftDelete 软删除任务
 func (t *Task) SoftDelete() error {
 	// 检查任务是否存在
-	if err := config.DB.First(&Task{}, t.ID).Error; err != nil {
+	if err := t.FindTaskByID(); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fmt.Errorf("task not found: %w", err)
 		}
@@ -117,4 +117,8 @@ func Paginate(page, limit int) func(db *gorm.DB) *gorm.DB {
 		offset := (page - 1) * limit
 		return db.Offset(offset).Limit(limit)
 	}
+}
+
+func (t *Task) FindTaskByID() error {
+	return config.DB.First(&t, t.ID).Error
 }

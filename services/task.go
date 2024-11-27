@@ -136,9 +136,11 @@ func DeleteTask(id uint) error {
 	// 初始化任务模型
 	var task models.Task
 
+	task.ID = id
+
 	// 删除任务
 	if err := task.Delete(); err != nil {
-		return fmt.Errorf("failed to delete task: %w", err)
+		return fmt.Errorf("failed to hard delete task with ID %d: %w", id, err)
 	}
 
 	return nil
@@ -149,9 +151,11 @@ func SoftDelete(id uint) error {
 	// 初始化任务模型
 	var task models.Task
 
+	task.ID = id
+
 	// 软删除任务
 	if err := task.SoftDelete(); err != nil {
-		return fmt.Errorf("failed to soft delete task: %w", err)
+		return fmt.Errorf("failed to soft delete task with ID %d: %w", id, err)
 	}
 
 	return nil
