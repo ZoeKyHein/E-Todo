@@ -122,3 +122,10 @@ func Paginate(page, limit int) func(db *gorm.DB) *gorm.DB {
 func (t *Task) FindTaskByID() error {
 	return config.DB.First(&t, t.ID).Error
 }
+
+func (t *Task) Restore() error {
+	if err := config.DB.Unscoped().Where("id = ? AND deleted_at IS NOT NULL", t.ID).First(&t).Error; err != nil {
+		return fmt.Errorf("restore failed: task not found or not soft-deleted: %w", err)
+	}
+	return config.DB.Model(&t).Update("deleted_at", nil).Error
+}

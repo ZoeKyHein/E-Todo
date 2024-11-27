@@ -93,9 +93,9 @@ func UpdateTask(c *gin.Context) {
 // DeleteTask 硬删除删除任务
 func DeleteTask(c *gin.Context) {
 	// 获取ID
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil || id <= 0 {
-		utils.Fail(c, nil, 1001, "Invalid task ID")
+	id, err := getIDFromParam(c)
+	if err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
 		return
 	}
 
@@ -112,9 +112,9 @@ func DeleteTask(c *gin.Context) {
 // SoftDelete 软删除任务
 func SoftDelete(c *gin.Context) {
 	// 获取ID
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil || id <= 0 {
-		utils.Fail(c, nil, 1001, "Invalid task ID")
+	id, err := getIDFromParam(c)
+	if err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
 		return
 	}
 
@@ -126,4 +126,31 @@ func SoftDelete(c *gin.Context) {
 
 	// 返回成功响应
 	utils.Success(c, nil, "Task soft deleted successfully")
+}
+
+// RestoreTask 恢复任务
+func RestoreTask(c *gin.Context) {
+	// 获取ID
+	id, err := getIDFromParam(c)
+	if err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
+		return
+	}
+
+	err = services.RestoreTask(uint(id))
+	if err != nil {
+		utils.Fail(c, nil, 1002, fmt.Sprintf("Failed to restore task: %v", err))
+		return
+	}
+
+	// 返回成功响应
+	utils.Success(c, nil, "Task restored successfully")
+}
+
+func getIDFromParam(c *gin.Context) (uint, error) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil || id <= 0 {
+		return 0, fmt.Errorf("invalid task ID")
+	}
+	return uint(id), nil
 }

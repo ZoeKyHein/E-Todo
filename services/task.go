@@ -160,3 +160,17 @@ func SoftDelete(id uint) error {
 
 	return nil
 }
+
+func RestoreTask(id uint) error {
+	// 初始化任务模型
+	var task models.Task
+
+	task.ID = id
+
+	// 恢复任务
+	if err := task.Restore(); err != nil {
+		return fmt.Errorf("service: failed to restore task with ID %d: %w", id, err)
+	}
+
+	return nil
+}
