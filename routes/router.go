@@ -16,6 +16,7 @@ func SetupRouter() *gin.Engine {
 		tasks.DELETE("/:id", controllers.DeleteTask)
 		tasks.PATCH("/:id", controllers.SoftDelete)
 		tasks.PATCH("/:id/restore", controllers.RestoreTask)
+		//tasks.PATCH("/:id/complete", controllers.CompleteTask)
 	}
 	return r
 }

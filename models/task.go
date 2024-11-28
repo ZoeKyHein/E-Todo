@@ -121,13 +121,20 @@ func Paginate(page, limit int) func(db *gorm.DB) *gorm.DB {
 
 // FindTaskByID 根据 ID 查询任务
 func (t *Task) FindTaskByID() error {
-	return config.DB.First(&t, t.ID).Error
+	return config.DB.Unscoped().First(&t, t.ID).Error
 }
 
 // Restore 恢复软删除的任务
 func (t *Task) Restore() error {
+	// 确保只查询软删除的记录
 	if err := config.DB.Unscoped().Where("id = ? AND deleted_at IS NOT NULL", t.ID).First(&t).Error; err != nil {
 		return fmt.Errorf("restore failed: task not found or not soft-deleted: %w", err)
 	}
-	return config.DB.Model(&t).Update("deleted_at", nil).Error
+
+	// 恢复软删除的记录
+	if err := config.DB.Unscoped().Model(&t).UpdateColumn("deleted_at", nil).Error; err != nil {
+		return fmt.Errorf("restore failed: unable to update deleted_at: %w", err)
+	}
+
+	return nil
 }
