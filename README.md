@@ -2,7 +2,7 @@
 
 E-Todo 是一个基于 Go 和 Gin 框架开发的任务管理系统，支持任务的增删改查、批量操作、颜色标记、分类、逾期提醒等功能。
 
-E-Todo is a task management system built with Go and the Gin framework, supporting task CRUD operations, batch operations, color tagging, categorization, overdue reminders, and more.
+E-Todo is a task management system built with Go and the Gin framework, supporting task CRUD operations, batch operations, color tagging, categorization,  and more.
 
 ## 功能特点 / Features
 
