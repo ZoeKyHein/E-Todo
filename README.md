@@ -67,7 +67,7 @@ E-Todo/
 
 ## API 文档 / API Documentation
 
-API 文档使用 [APIFOX](https://apifox.com/apidoc/shared-f53cc96e-57d6-4bf1-9341-795011f7d9b7/237933623e0) 生成。/ API documentation is generated with [APIFOX](https://apifox.com/apidoc/shared-f53cc96e-57d6-4bf1-9341-795011f7d9b7/237933623e0).
+API 文档使用 [APIFOX](https://apifox.com/apidoc/shared-21d53332-305c-43c3-9371-99b1005f5137) 生成。/ API documentation is generated with [APIFOX](https://apifox.com/apidoc/shared-21d53332-305c-43c3-9371-99b1005f5137).
 
 
 ## 许可证 / License
