@@ -99,7 +99,7 @@ func DeleteTask(c *gin.Context) {
 		return
 	}
 
-	err = services.DeleteTask(uint(id))
+	err = services.DeleteTask(id)
 	if err != nil {
 		utils.Fail(c, nil, 1002, "Failed to delete task")
 		return
@@ -118,7 +118,7 @@ func SoftDelete(c *gin.Context) {
 		return
 	}
 
-	err = services.SoftDelete(uint(id))
+	err = services.SoftDelete(id)
 	if err != nil {
 		utils.Fail(c, nil, 1002, "Failed to soft delete task")
 		return
@@ -137,7 +137,7 @@ func RestoreTask(c *gin.Context) {
 		return
 	}
 
-	err = services.RestoreTask(uint(id))
+	err = services.RestoreTask(id)
 	if err != nil {
 		utils.Fail(c, nil, 1002, fmt.Sprintf("Failed to restore task: %v", err))
 		return
@@ -165,7 +165,7 @@ func CompleteTask(c *gin.Context) {
 		return
 	}
 
-	err = services.CompleteTask(uint(id))
+	err = services.CompleteTask(id)
 	if err != nil {
 		utils.Fail(c, nil, 1002, fmt.Sprintf("Failed to complete task: %v", err))
 		return
