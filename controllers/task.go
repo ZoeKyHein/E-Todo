@@ -174,3 +174,28 @@ func CompleteTask(c *gin.Context) {
 	// 返回成功响应
 	utils.Success(c, nil, "Task completed successfully")
 }
+
+// BatchDeleteTasks 批量删除任务
+func BatchDeleteTasks(c *gin.Context) {
+	var req dto.BatchTaskActionReq
+
+	// 绑定 JSON 数据到 BatchDeleteTasksReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
+		return
+	}
+
+	// 校验 IDs 是否为空
+	if len(req.IDs) == 0 {
+		utils.Fail(c, nil, 1001, "No task IDs provided")
+		return
+	}
+
+	if err := services.BatchDeleteTasks(req); err != nil {
+		utils.Fail(c, nil, 1002, "Failed to batch delete tasks")
+		return
+	}
+
+	// 返回成功响应
+	utils.Success(c, nil, "Tasks batch deleted successfully")
+}

@@ -190,3 +190,16 @@ func CompleteTask(id uint) error {
 	return nil
 
 }
+
+// BatchDeleteTasks 批量删除任务
+func BatchDeleteTasks(req dto.BatchTaskActionReq) interface{} {
+	// 初始化任务模型
+	var task models.Task
+
+	// 批量删除任务
+	if err := task.BatchDelete(req.IDs); err != nil {
+		return fmt.Errorf("failed to batch delete tasks: %w", err)
+	}
+
+	return nil
+}

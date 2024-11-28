@@ -51,3 +51,8 @@ type UpdateTaskReq struct {
 	DueDate     string `json:"due_date"`              // 截止日期，选填 (格式：yyyy-MM-ddTHH:mmZ)
 	Status      string `json:"status"`                // 任务状态，选填
 }
+
+// BatchTaskActionReq 批量任务操作请求参数
+type BatchTaskActionReq struct {
+	IDs []uint `json:"ids" binding:"required"`
+}

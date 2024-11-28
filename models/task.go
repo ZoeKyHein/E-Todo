@@ -153,3 +153,8 @@ func (t *Task) Complete() error {
 
 	return nil
 }
+
+// BatchDelete 批量硬删除任务
+func (t *Task) BatchDelete(ids []uint) error {
+	return config.DB.Unscoped().Where("id IN ?", ids).Delete(&t).Error
+}
