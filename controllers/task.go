@@ -199,3 +199,78 @@ func BatchDeleteTasks(c *gin.Context) {
 	// 返回成功响应
 	utils.Success(c, nil, "Tasks batch deleted successfully")
 }
+
+// BatchCompleteTasks 批量完成任务
+func BatchCompleteTasks(c *gin.Context) {
+	var req dto.BatchTaskActionReq
+
+	// 绑定 JSON 数据到 BatchCompleteTasksReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
+		return
+	}
+
+	// 校验 IDs 是否为空
+	if len(req.IDs) == 0 {
+		utils.Fail(c, nil, 1001, "No task IDs provided")
+		return
+	}
+
+	if err := services.BatchCompleteTasks(req); err != nil {
+		utils.Fail(c, nil, 1002, "Failed to batch complete tasks")
+		return
+	}
+
+	// 返回成功响应
+	utils.Success(c, nil, "Tasks batch completed successfully")
+}
+
+// BatchSoftDeleteTasks 批量软删除任务
+func BatchSoftDeleteTasks(c *gin.Context) {
+	var req dto.BatchTaskActionReq
+
+	// 绑定 JSON 数据
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
+		return
+	}
+
+	// 校验 IDs 是否为空
+	if len(req.IDs) == 0 {
+		utils.Fail(c, nil, 1001, "No task IDs provided")
+		return
+	}
+
+	if err := services.BatchSoftDeleteTasks(req); err != nil {
+		utils.Fail(c, nil, 1002, "Failed to batch soft delete tasks")
+		return
+	}
+
+	// 返回成功响应
+	utils.Success(c, nil, "Tasks batch soft deleted successfully")
+}
+
+// BatchRestoreTasks 批量恢复任务
+func BatchRestoreTasks(c *gin.Context) {
+	var req dto.BatchTaskActionReq
+
+	// 绑定 JSON 数据
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
+		return
+	}
+
+	// 校验 IDs 是否为空
+	if len(req.IDs) == 0 {
+		utils.Fail(c, nil, 1001, "No task IDs provided")
+		return
+	}
+
+	if err := services.BatchRestoreTasks(req); err != nil {
+		utils.Fail(c, nil, 1002, "Failed to batch restore tasks")
+		return
+	}
+
+	// 返回成功响应
+	utils.Success(c, nil, "Tasks batch restored successfully")
+}

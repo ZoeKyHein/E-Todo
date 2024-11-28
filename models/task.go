@@ -158,3 +158,18 @@ func (t *Task) Complete() error {
 func (t *Task) BatchDelete(ids []uint) error {
 	return config.DB.Unscoped().Where("id IN ?", ids).Delete(&t).Error
 }
+
+// BatchComplete 批量完成任务
+func (t *Task) BatchComplete(ids []uint) error {
+	return config.DB.Model(&t).Where("id IN ? AND status = ?", ids, TaskStatusPending).Update("status", TaskStatusCompleted).Error
+}
+
+// BatchSoftDelete 批量软删除任务
+func (t *Task) BatchSoftDelete(ids []uint) error {
+	return config.DB.Where("id IN ? AND deleted_at IS NULL", ids).Delete(&t).Error
+}
+
+// BatchRestore 批量恢复任务
+func (t *Task) BatchRestore(ids []uint) error {
+	return config.DB.Unscoped().Model(&t).Where("id IN ? AND deleted_at IS NOT NULL", ids).Update("deleted_at", nil).Error
+}

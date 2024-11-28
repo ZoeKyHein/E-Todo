@@ -203,3 +203,42 @@ func BatchDeleteTasks(req dto.BatchTaskActionReq) interface{} {
 
 	return nil
 }
+
+// BatchCompleteTasks 批量完成任务
+func BatchCompleteTasks(req dto.BatchTaskActionReq) error {
+	// 初始化任务模型
+	var task models.Task
+
+	// 批量完成任务
+	if err := task.BatchComplete(req.IDs); err != nil {
+		return fmt.Errorf("failed to batch complete tasks: %w", err)
+	}
+
+	return nil
+}
+
+// BatchSoftDeleteTasks 批量软删除任务
+func BatchSoftDeleteTasks(req dto.BatchTaskActionReq) interface{} {
+	// 初始化任务模型
+	var task models.Task
+
+	// 批量软删除任务
+	if err := task.BatchSoftDelete(req.IDs); err != nil {
+		return fmt.Errorf("failed to batch soft delete tasks: %w", err)
+	}
+
+	return nil
+}
+
+// BatchRestoreTasks 批量恢复任务
+func BatchRestoreTasks(req dto.BatchTaskActionReq) error {
+	// 初始化任务模型
+	var task models.Task
+
+	// 批量恢复任务
+	if err := task.BatchRestore(req.IDs); err != nil {
+		return fmt.Errorf("failed to batch restore tasks: %w", err)
+	}
+
+	return nil
+}

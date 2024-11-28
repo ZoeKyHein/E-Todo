@@ -21,6 +21,9 @@ func SetupRouter() *gin.Engine {
 		batchTasks := tasks.Group("batch")
 		{
 			batchTasks.DELETE("", controllers.BatchDeleteTasks)
+			batchTasks.PATCH("", controllers.BatchSoftDeleteTasks)
+			batchTasks.PATCH("complete", controllers.BatchCompleteTasks)
+			batchTasks.PATCH("restore", controllers.BatchRestoreTasks)
 		}
 	}
 	return r
