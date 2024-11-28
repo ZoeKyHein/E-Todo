@@ -175,3 +175,18 @@ func RestoreTask(id uint) error {
 
 	return nil
 }
+
+func CompleteTask(id uint) error {
+	// 初始化任务模型
+	var task models.Task
+
+	task.ID = id
+
+	// 完成任务
+	if err := task.Complete(); err != nil {
+		return fmt.Errorf("service: failed to complete task with ID %d: %w", id, err)
+	}
+
+	return nil
+
+}

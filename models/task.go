@@ -138,3 +138,18 @@ func (t *Task) Restore() error {
 
 	return nil
 }
+
+// Complete 完成任务
+func (t *Task) Complete() error {
+	// 确保只查询未完成的任务
+	if err := config.DB.Where("id = ? AND status = ?", t.ID, TaskStatusPending).First(&t).Error; err != nil {
+		return fmt.Errorf("complete failed: task not found or already completed: %w", err)
+	}
+
+	// 完成任务
+	if err := config.DB.Model(&t).Update("status", TaskStatusCompleted).Error; err != nil {
+		return fmt.Errorf("complete failed: unable to update status: %w", err)
+	}
+
+	return nil
+}

@@ -155,3 +155,22 @@ func getIDFromParam(c *gin.Context) (uint, error) {
 	}
 	return uint(id), nil
 }
+
+// CompleteTask 完成任务
+func CompleteTask(c *gin.Context) {
+	// 获取ID
+	id, err := getIDFromParam(c)
+	if err != nil {
+		utils.Fail(c, nil, 1001, err.Error())
+		return
+	}
+
+	err = services.CompleteTask(uint(id))
+	if err != nil {
+		utils.Fail(c, nil, 1002, fmt.Sprintf("Failed to complete task: %v", err))
+		return
+	}
+
+	// 返回成功响应
+	utils.Success(c, nil, "Task completed successfully")
+}
